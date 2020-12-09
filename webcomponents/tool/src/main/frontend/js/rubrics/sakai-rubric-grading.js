@@ -64,7 +64,7 @@ export class SakaiRubricGrading extends RubricsElement {
 
     return html`
       <h3 style="margin-bottom: 10px;">${this.rubric.title}</h3>
-      ${this.evaluation.status === "DRAFT" ? html`
+      ${this.evaluation && this.evaluation.status === "DRAFT" ? html`
         <div class="sak-banner-warn">
           <sr-lang key="draft_evaluation">DRAFT</sr-lang>
         </div>
@@ -335,7 +335,7 @@ export class SakaiRubricGrading extends RubricsElement {
   getAssociation() {
 
     $.ajax({
-      url: `/rubrics-service/rest/rubric-associations/search/by-tool-item-ids?toolId=${this.toolId}&itemId=${this.entityId}`,
+      url: `/rubrics-service/rest/rubric-associations/search/by-tool-and-assignment?toolId=${this.toolId}&itemId=${this.entityId}`,
       headers: { "authorization": this.token }
     }).done(data => {
 
@@ -355,7 +355,7 @@ export class SakaiRubricGrading extends RubricsElement {
     }).done(rubric => {
 
       $.ajax({
-        url: `/rubrics-service/rest/evaluations/search/by-tool-item-and-associated-item-and-evaluated-item-ids?toolId=${this.toolId}&itemId=${this.entityId}&evaluatedItemId=${this.evaluatedItemId}`,
+        url: `/rubrics-service/rest/evaluations/search/by-tool-and-assignment-and-submission?toolId=${this.toolId}&itemId=${this.entityId}&evaluatedItemId=${this.evaluatedItemId}`,
         headers: { "authorization": this.token }
       }).done(data => {
 
